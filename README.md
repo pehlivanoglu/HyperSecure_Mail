@@ -14,6 +14,7 @@ y = encrypt() #or decrypt()
 
 y = run(necessary_parameters)
 
+IMPORTANT NOTE = You may need to change the file_path parameters in both files
 
 ## Issues:
 <del>1- in enc_dyc_tes.ipynb file, encrypting short text files is problematic due to 16byte encyrption method. Will be solved.</del>
