@@ -1,4 +1,6 @@
-## Usage:
+## USAGE:
+
+### client/src/encryption:
 RSA class in rsa.ipynb file is used for creating public-private key pairs. Can be simply used as 
 
 x = RSA()
@@ -15,6 +17,11 @@ y = encrypt() #or decrypt()
 y = run(necessary_parameters)
 
 IMPORTANT NOTE = You may need to change the file_path parameters in both files
+
+### server/rsa_transfer_api:
+
+will be written
+
 
 ## Issues:
 <del>1- in enc_dyc_tes.ipynb file, encrypting short text files is problematic due to 16byte encyrption method. Will be solved.</del>
