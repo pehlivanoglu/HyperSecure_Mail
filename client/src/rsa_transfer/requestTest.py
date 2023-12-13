@@ -1,7 +1,7 @@
 import requests
 
 # The URL of the API endpoint or resource you're requesting
-url = 'http://34.16.162.173/api/getkey'
+url = 'http://localhost:8000/rsa_transfer/get_key'
 
 # Custom headers you want to send
 headers = {
