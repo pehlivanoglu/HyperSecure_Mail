@@ -5,7 +5,7 @@ url = 'http://localhost:8000/rsa_transfer/get_key'
 
 # Custom headers you want to send
 headers = {
-    'receiver-mail': 'testa@test.com'
+    'receiver-mail': 'test@test.com'
 }
 
 # Send the GET request

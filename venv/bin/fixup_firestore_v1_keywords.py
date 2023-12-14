@@ -1,4 +1,4 @@
-#!/home/pehlivanoglu/Desktop/mail_enc/venv/bin/python
+#!/home/pehlivanoglu/Desktop/mail_enc/venv/bin/python3
 # -*- coding: utf-8 -*-
 # Copyright 2023 Google LLC
 #
