@@ -1,0 +1,5 @@
+transceiver serveri ac ve mail transferi icin configure et.
+DNS al
+apiyi self signed key ile sertifikala
+receiver abone olmasa da mail alabilsin
+client side main yaz mainde mailleri otomatik sifrele ve ac
