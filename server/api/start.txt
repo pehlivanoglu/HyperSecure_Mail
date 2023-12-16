@@ -1,6 +1,0 @@
-to start server:
-gunicorn api.wsgi:application --bind 0.0.0.0:8000
-
-if server does not start because of port 8000 is busy:
-first do -> sudo lsof -i :8000
-then kill the process with -> kill [pid]
