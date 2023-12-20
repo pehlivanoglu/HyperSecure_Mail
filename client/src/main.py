@@ -1,75 +1,59 @@
-import curses
+from apiClient import UserAuthClient
+from apiClient import PublicKeyClient
+from apiClient import MailClient
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+from encryption import RSA
+from encryption import encrypt
+from encryption import decrypt
 
-# Global state
-current_state = "start_screen"
-authenticated = False
 
-def draw_textbox(stdscr, prompt_string):
-    curses.echo() 
-    stdscr.addstr(prompt_string)
-    input = stdscr.getstr().decode()
-    curses.noecho()
-    return input
 
-def draw_menu(stdscr):
-    global current_state, authenticated
-    k = 0
+#SIGNIN
+authClient = UserAuthClient()
+token = authClient.signin("ahmet", "pw")
 
-    # Clear and refresh the screen for a blank canvas
-    stdscr.clear()
-    stdscr.refresh()
+dec = decrypt()
+dec.run()
+# sym_key, enc_data=enc.run(public_key=pkey,text_to_enc="123456789_10")
+# print(enc_data)
+# print(type(enc_data))
+# print(str(enc_data))
 
-    # Loop where k is the last character pressed
-    while (k != ord('q')):  # Press 'q' to exit
-        stdscr.clear()
-        height, width = stdscr.getmaxyx()
+# #SEND MAIL
+# mailClient = MailClient(token)
+# response = mailClient.send_mail(receiver="ahmet", subject="subject", body=str(enc_data), sym_key=str(sym_key), token=token)
+# print(response)
 
-        if current_state == "start_screen":
-            menu = ["1. Sign In", "2. Sign Up"] if not authenticated else ["1. Sign Out", "2. Send Mail", "3. See Mails"]
-            for idx, row in enumerate(menu):
-                x = width//2 - len(row)//2
-                y = height//2 - len(menu)//2 + idx
-                stdscr.addstr(y, x, row)
+#get key
+# keyClient = PublicKeyClient(token)
+# response = keyClient.get_public_key(email="ahmet")
+# print(response)
 
-            if k == ord('1'):
-                current_state = "auth"
-            elif k == ord('2') and not authenticated:
-                current_state = "register"
-            elif k == ord('2') and authenticated:
-                current_state = "send_mail"
-            elif k == ord('3'):
-                current_state = "see_mails"
 
-        elif current_state == "auth":
-            username = draw_textbox(stdscr, "Username: ")
-            password = draw_textbox(stdscr, "Password: ")
-            # Here, handle authentication
-            authenticated = True  # Assuming authentication success
-            current_state = "start_screen"
 
-        elif current_state == "register":
-            # Handle registration process
-            # After successful registration, set authenticated = True
-            current_state = "start_screen"
+# #SIGNUP
+# authClient = UserAuthClient()
+# token = authClient.signup("ceren","pw")
+# print(token)
 
-        elif current_state == "send_mail":
-            # Handle sending mail
-            current_state = "start_screen"
+# #postkey
+# x = RSA()
+# public_key = x.generate_public_key()
 
-        elif current_state == "see_mails":
-            # Handle displaying mails
-            stdscr.getch() # Wait for any key press
-            current_state = "start_screen"
+# keyClient = PublicKeyClient(token)
+# response = keyClient.post_public_key(public_key)
+# print(response)
 
-        # Refresh the screen
-        stdscr.refresh()
 
-        # Wait for next input
-        k = stdscr.getch()
 
-# Initialize curses
-def main():
-    curses.wrapper(draw_menu)
 
-if __name__ == "__main__":
-    main()
+# #GET MAILS
+# mailClient = MailClient(token)
+# response = mailClient.get_mails()
+# print(response)
+
+# #GET SENT MAILS
+# mailClient = MailClient(token)
+# response = mailClient.get_sent_mails()
+# print(response)

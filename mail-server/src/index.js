@@ -8,14 +8,12 @@ const authRoutes = require("./routes/authRoutes");
 const keyRoutes = require("./routes/keyRoutes");
 const mailRoutes = require("./routes/mailRoutes");
 const requireAuth = require("./middlewares/requireAuth");
-const Mail = mongoose.model('Mail');
-
-const { SMTPServer } = require('smtp-server');
+const https = require("https");
 const fs = require('fs');
 
 
-
 const app = express();
+
 
 app.use(bodyParser.json());
 app.use(authRoutes);
@@ -44,38 +42,15 @@ app.get("/", requireAuth, (req, res) => {
   res.send(`Your email: ${req.user.email}`);
 });
 
-app.listen(3000, () => {
-  console.log("Listening on port 3000");
+const SSLoptions = {
+  key: fs.readFileSync("/home/pehlivanoglu/Desktop/mail_enc/mail-server/src/server.key"),
+  cert: fs.readFileSync('/home/pehlivanoglu/Desktop/mail_enc/mail-server/src/server.cert')
+};
+
+https.createServer(SSLoptions, app).listen(443, () => {
+  console.log('HTTPS server running on port 443');
 });
 
-
-const server = new SMTPServer({
-  secure: true,
-  key: fs.readFileSync('server.key'),
-  cert: fs.readFileSync('server.cert'),
-  onData(stream, session, callback) {
-      simpleParser(stream, {}, (err, parsed) => {
-          if (err) {
-              console.error(err);
-              return callback(err);
-          }
-          const emailData = new Mail({
-              sender: parsed.from.text,
-              receiver: parsed.to.text,
-              subject: parsed.subject,
-              body: parsed.text
-          });
-
-          emailData.save(err => {
-              if (err) {
-                  console.error('Error saving email:', err);
-                  return callback(err);
-              }
-              console.log('Email saved successfully');
-              callback();
-          });
-      });
-  },
-});
-
-server.listen(465);
+// app.listen(3000, () => {
+//   console.log("Listening on port 3000");
+// });

@@ -29,9 +29,9 @@ router.get('/key', async (req, res) => {
 
 router.post('/key', async (req, res) => {
   const email = req.user.email;
-  const public_key = req.rawHeaders[13];
+  const public_key = req.body.public_key;
 
-  const ifUnique = await User.find({ email: email });
+  const ifUnique = await Public_Key.find({ email: email });
   
   if (!public_key) {
     return res
@@ -39,7 +39,7 @@ router.post('/key', async (req, res) => {
       .send({ error: 'You must provide a public key!' });
   }
 
-  if(ifUnique!=undefined){
+  if(ifUnique[0]!=undefined){
     return res
       .status(422)
       .send({ error: 'User already has a public key!' });

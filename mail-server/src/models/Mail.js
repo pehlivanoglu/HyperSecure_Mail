@@ -18,7 +18,12 @@ const  mailSchema = new mongoose.Schema({
   sending_time: {
     type: Date,
     default: Date.now 
+  },
+  sym_key: {
+    type: String,
+    default: "" 
   }
+  
 });
 
 mongoose.model('Mail', mailSchema);

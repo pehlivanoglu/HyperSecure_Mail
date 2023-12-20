@@ -10,7 +10,7 @@ router.post('/signup', async (req, res) => {
   
   const ifUnique = await User.find({ email: email });
   
-  if(ifUnique!=undefined){
+  if(ifUnique[0]!=undefined){
     return res
       .status(422)
       .send({ error: 'This email is in use!' });
