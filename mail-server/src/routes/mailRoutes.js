@@ -20,7 +20,7 @@ router.post('/sendMail', async (req, res) => {
   try {
     const new_mail = new Mail({ sender , receiver, subject, body, sym_key:sym_key});
     await new_mail.save();
-    res.send("Mail received!");
+    res.send("Mail has been succesfully sent!");
   } catch (err) {
     res.status(422).send({ error: err.message });
   }

@@ -1,6 +1,5 @@
 import requests
-import json
-
+import base64
 class UserAuthClient:
     def __init__(self):
         self.base_url = "https://localhost:443"
@@ -24,6 +23,8 @@ class PublicKeyClient:
         self.headers = {
             'Authorization': f'Bearer {auth_token["token"]}'
         }
+        # print(auth_token["token"])
+
 
     def get_public_key(self, email):
         url = f"{self.base_url}/key"
@@ -51,7 +52,7 @@ class MailClient:
         url = f"{self.base_url}/getMails"
         response = requests.get(url, headers=self.headers,verify=False)
         try:
-            return response.json()[0]
+            return response.json()
         except IndexError:
             return "Mailbox empty"
         
@@ -64,15 +65,16 @@ class MailClient:
             return "No sent mails"
         
     
-    def send_mail(self, receiver, subject, body, token, sym_key):
-        keyClient = PublicKeyClient(token)
-        keyClient.get_public_key(receiver)
+    def send_mail(self, receiver, subject, body, sym_key):
+        
+        body_b64 = base64.b64encode(body).decode('utf-8')
+        sym_key_b64 = base64.b64encode(sym_key).decode('utf-8')
 
         data = {
-        "receiver": f"{receiver}",
-        "subject": f"{subject}",
-        "body": f"{body}",
-        "sym_key" : sym_key
+        "receiver": receiver,
+        "subject": subject,
+        "body": body_b64,
+        "sym_key": sym_key_b64
         }
         url = f"{self.base_url}/sendMail"
         response = requests.post(url, json=data, headers=self.headers,verify=False)

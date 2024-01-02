@@ -9,12 +9,72 @@ from encryption import decrypt
 
 
 
-#SIGNIN
 authClient = UserAuthClient()
-token = authClient.signin("ahmet", "pw")
+token = authClient.signin("kerem4", "pw")
 
-dec = decrypt()
-dec.run()
+mai= MailClient(token)
+response = mai.send_mail("kerem4","a","body","aa")
+print(response)
+# postkey
+# x = RSA()
+# public_key = x.run()
+
+# keyClient = PublicKeyClient(token)
+# response = keyClient.post_public_key(public_key)
+# # print(response)
+# print(public_key)
+# x.run()
+
+
+
+
+
+
+# #SIGNIN
+# authClient = UserAuthClient()
+# token = authClient.signin("ceren", "pw")
+
+# keyClient = PublicKeyClient(token)
+# pkey = keyClient.get_public_key("ceren")
+
+# with open("./keys/public_key.pem", "w+") as f:
+#     f.write(pkey)
+
+# y = encrypt()
+# y.run()
+
+# with open("./enc_data/mail", "rb") as f:
+#     file_data = f.read()
+
+# with open("./keys/enc_sym_key", "rb") as f:
+#     sym = f.read()
+
+# mailClient = MailClient(token)
+# mailClient.send_mail("ceren","subj", file_data, token, sym)
+
+
+
+#postkey
+# x = RSA()
+# public_key = x.run()
+
+# keyClient = PublicKeyClient(token)
+# response = keyClient.post_public_key(public_key)
+# print(response)
+# print(public_key)
+# x.run()
+
+# y = encrypt()
+# y.run()
+# z = decrypt()
+# a = z.run()
+# print(a)
+# print(data, sym)
+# print(y.load_public_key())
+# keyClient = PublicKeyClient(token)
+# response = keyClient.post_public_key(public_key)
+# print(response)
+
 # sym_key, enc_data=enc.run(public_key=pkey,text_to_enc="123456789_10")
 # print(enc_data)
 # print(type(enc_data))
