@@ -63,8 +63,8 @@ class encrypt:
         
         
 class decrypt:
-    def load_private_key(self):
-        with open("./mykeys/private_key.pem", "rb") as key_file:
+    def load_private_key(self, email):
+        with open(f"./mykeys/private{email}.pem", "rb") as key_file:
             private_key = serialization.load_pem_private_key(
                 key_file.read(),
                 password=None,
@@ -104,17 +104,13 @@ class decrypt:
         decrypted_data = unpadder.update(padded_data) + unpadder.finalize()
         return decrypted_data
 
-    def save_data(self, dec_data,time):
-        with open(f"./mailbox/{time}", 'wb') as f:
-            f.write(dec_data)
-
-    def run(self,time):
-        priv_key = self.load_private_key()
+    def run(self,email):
+        priv_key = self.load_private_key(email)
         enc_sym_key = self.load_enc_sym_key()
         sym_key = self.decrypt_sym_key(priv_key, enc_sym_key)
         iv, enc_data = self.load_enc_file()
         decrypted_data = self.decrypt_data(iv, sym_key, enc_data)
-        self.save_data(decrypted_data,time)
+        # self.save_data(decrypted_data,time)
         return decrypted_data
         
 
@@ -131,16 +127,16 @@ class RSA:
         public_key = crypto.dump_publickey(crypto.FILETYPE_PEM, self.key).decode('utf-8')
         return public_key
 
-    def save_key_priv(self, key):
-        with open(f"./mykeys/private_key.pem", "w") as f:
+    def save_key_priv(self, key,email):
+        with open(f"./mykeys/private{email}.pem", "w") as f:
             f.write(key)
-    def save_key_pub(self, key):
-        with open(f"./mykeys/public_key.pem", "w") as f:
+    def save_key_pub(self, key, email):
+        with open(f"./mykeys/public{email}.pem", "w") as f:
             f.write(key)
 
-    def run(self):
+    def run(self,email):
         priv_key = self.generate_private_key()
         pub_key  = self.generate_public_key()
-        self.save_key_priv(priv_key)
-        self.save_key_pub(pub_key)
+        self.save_key_priv(priv_key,email)
+        self.save_key_pub(pub_key, email)
         return pub_key
