@@ -4,11 +4,26 @@ from PIL import Image, ImageTk
 
 
 def sign_in():
-    # In a real application, validate credentials here
-    # messagebox.showinfo("Sign In", "Sign In Successful!")
-    show_main_menu()
+    # Retrieve the email and password from entry fields or user input
+    email_input = entry_username.get()  # Assuming entry_username is the Entry field for email
+    password_input = entry_password.get()  # Assuming entry_password is the Entry field for password
 
+    # Call the signin function with retrieved email and password
+    token = signin(email_input, password_input)
 
+    # Check the token or returned value from signin() and take appropriate actions
+    if isinstance(token, dict) and "token" in token:
+        messagebox.showinfo("Sign In", "Sign In Successful!")  # Display success message
+        show_main_menu()  # Show the main menu or perform other actions
+    else:
+        messagebox.showerror("Sign In Failed", token) 
+
+def signin(self, email, password):
+        url = f"{self.base_url}/signin"
+        data = {'email': email, 'password': password}
+        response = requests.post(url, json=data, verify=False)
+        return response.json()
+    
 def show_main_menu():
     # Hide sign in frame and show main menu frame
     frame_signin.pack_forget()
@@ -109,10 +124,7 @@ window.configure(bg=BG_COLOR)
 # Login Menu Frame
 frame_signin = tk.Frame(window, bg=BG_COLOR)
 
-img = ImageTk.PhotoImage(Image.open("/home/pehlivanoglu/Desktop/mail_enc/client/src/icon.png").resize((150, 150)))
-window.iconbitmap(img)
-icon_label = tk.Label(frame_signin, image=img)
-icon_label.pack()
+
 
 label_username = tk.Label(frame_signin, text="Email address:", bg=BG_COLOR, fg=TEXT_COLOR, font=FONT, pady=10)
 label_username.pack()

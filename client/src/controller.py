@@ -11,6 +11,28 @@ import time
 import base64
 import os
 import sys
+import platform
+import subprocess
+
+print(os.getcwd())
+
+def delete_file_permanently(file_path):
+    try:
+        if platform.system() == "Windows":
+            import win32com.client
+            shell = win32com.client.Dispatch("WScript.Shell")
+            shell.SendKeys("{DEL}")
+            os.remove(file_path)
+        elif platform.system() == "Darwin":
+            subprocess.run(["rm", file_path])
+        elif platform.system() == "Linux":
+            os.remove(file_path)
+        else:
+            print("Unsupported operating system.")
+    except FileNotFoundError:
+        pass
+    except Exception as e:
+        pass
 
 email_addr = ""
 isSignedIn = False
@@ -62,7 +84,7 @@ def signin(email, password):
     else:
         return "Invalid email type!"
 
-def sendMail(receiver, subject, body, token):
+def sendMail(receiver, subject, body, token, flag=False):
     with open("./data/mail", 'w+') as f:
         f.write(f"loremipsumdolorx{subject}-{body}")
     
@@ -80,10 +102,13 @@ def sendMail(receiver, subject, body, token):
             file_data = f.read()
 
     mailClient = MailClient(token)
-    response = mailClient.send_mail(receiver, "Encrypted Subject", file_data, sym_key)
-    currTime = time.time()
-    with open(f"./sentMails/{email_addr}{currTime}", 'w+') as f:
-        f.write(f"To:{receiver}\nSubject:{subject}\nBody:{body}\nTimestamp:{currTime}")
+    if flag == False:
+        response = mailClient.send_mail(receiver, "Encrypted Subject", file_data, sym_key)
+        currTime = time.time()
+        with open(f"./sentMails/{email_addr}{currTime}", 'w+') as f:
+            f.write(f"To:{receiver}\nSubject:{subject}\nBody:{body}\nTimestamp:{currTime}")
+    else:
+        response = mailClient.send_mail(receiver, email_addr, file_data, sym_key)
     return response
         
     
@@ -117,73 +142,85 @@ def mailbox(token):
     return mailbox
 
 def sentMails():
-    folder_path = './sentMails'
-    start_with = email_addr
-    sent = []
+    mailClient = MailClient(token)
+    response = mailClient.get_mails()
+    mailbox = []
+    for mail in response:
+        with open("./otherskeys/enc_sym_key", 'wb') as f:
+            f.write(base64.b64decode(mail['sym_key']))
 
-    for file in os.listdir(folder_path):
-        if file.startswith(start_with):
-            file_path = os.path.join(folder_path, file)
-            with open(file_path, 'r') as f:
-                sent.append(f.read())
+        with open("./enc_data/mail", 'wb') as f:
+            f.write(base64.b64decode(mail['body']))
+
+        y = decrypt()
+        sender = mail['sender']
+        time = mail['sending_time']
+        to = mail["subject"]
+        mail = y.run(mail['receiver'])
+        mail = mail.decode().split("-")
+        subject = mail[0]
+        body = mail[1]
+        mailbox.append({"from":sender,
+                        "to" : to,
+                        "subject":subject,
+                        "body":body,
+                        "sending_date":time})
+        
+        with open(f"./sentMails/{time}", 'w') as f:
+            f.write(f"From:{sender}\nSubject:{subject}\nBody:{body}\nTimestamp:{time}")
 
 
 def logout():
-    try:
-        os.remove("./data/mail")
-    except:
-        pass
-    try:
-        os.remove("./enc_data/mail")
-    except:
-        pass
-    try:
-        os.remove("./otherskeys/enc_sym_key")
-    except:
-        pass
-    try:
-        os.remove("./otherskeys/public_key.pem")
-    except:
-        pass
-        
-    flag = input("Do you want to delete your private key from thic computer?\nYes: y, No: n\n")
-
-    if flag=="y":
+    print("\nInitiating logout process...\n")
+    files_to_delete = ["./data/mail", "./enc_data/mail", "./otherskeys/enc_sym_key", "./otherskeys/public_key.pem"]
+    for file in files_to_delete:
         try:
-            with open(f"./mykeys/private{email_addr}.pem", 'r') as f:
+            delete_file_permanently(file)
+            pass
+        except:
+            pass
+
+    flag = input("Do you want to delete your private key from this computer? (Yes: y / No: n): ").lower()
+    if flag == "y":
+        private_key_file = f"./mykeys/private{email_addr}.pem"
+        try:
+            with open(private_key_file, 'r') as f:
+                print("\nYour private key:\n")
                 print(f.read())
         except:
-            pass
+            print("Private key not found or already deleted.")
 
-        confr = input("If you want to delete, please save your private key.\nIt is not stored anywhere, if you don't save it, you wont be able to connect your mail account again!\nDid you save your private key? Yes: y, No: n\n")
-        while confr == "n":
-            confr = input("\nIf you want to delete, please save your private key.\nIt is not stored anywhere, if you don't save it, you wont be able to connect your mail account again!\nDid you save your private key? Yes: y, No: n\n")
-        
-        try:
-            os.remove(f"./mykeys/private{email_addr}.pem")
-        except:
-            pass
-        try:
-            os.remove(f"./mykeys/public{email_addr}.pem")
-        except:
-            pass
-        print("Your private and public key is deleted!")
+        confr = input("\nSave your private key before deleting. Have you saved it? (Yes: y / No: n): ").lower()
+        while confr != "y":
+            confr = input("Please save your private key. Confirm once saved (Yes: y / No: n): ").lower()
 
-    
+        delete_file_permanently(private_key_file)
+        print("Your private key has been deleted.\n")
+
+    print("Cleaning up mailbox...")
     folder_path = "./mailbox"
     for filename in os.listdir(folder_path):
         file_path = os.path.join(folder_path, filename)
-        if os.path.isfile(file_path) or os.path.islink(file_path):
-            os.unlink(file_path)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+        except:
+            pass
 
-    con = input("\nDo you want to delete your sent mails.\nThey are not stored anywhere, if you don't save , you wont be able to see mails you have sent again!\nYes: y, No: n\n")
-
+    con = input("\nDo you want to delete your sent mails? (Yes: y / No: n): ").lower()
     if con == "y":
+        print("Deleting sent mails...")
         folder_path = "./sentMails"
         for filename in os.listdir(folder_path):
             file_path = os.path.join(folder_path, filename)
-            if os.path.isfile(file_path) or os.path.islink(file_path):
-                os.unlink(file_path) 
+            try:
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)
+            except:
+                pass
+    
+    print("\nLogout completed successfully.\n")
+
     
     
     
@@ -192,87 +229,74 @@ def logout():
 
 
 while not isSignedIn:
-    action = input("~~~~~~~~~~~~ Welcome to End to End Encrypted Https Mail System ~~~~~~~~~~~~\n1-Sign In\n2-Sign Up\n3-Exit\n")
-    while action!="1" and action!="2" and action!="3":
-        action = input("Invalid operation, try again!\n1-Sign In\n2-Sign Up\n3-Exit")
+    print("\n~~~~~~~~~~~~ Welcome to End to End Encrypted Https Mail System ~~~~~~~~~~~~\n")
+    action = input("1-Sign In\n2-Sign Up\n3-Exit\nChoose an option: ")
+
+    while action not in ["1", "2", "3"]:
+        action = input("Invalid operation, try again!\nChoose an option (1-Sign In, 2-Sign Up, 3-Exit): ")
     
-    if action=="1":
-        print("\n~~ SIGN IN ~~ ")
+    if action == "1":
+        print("\n~~ SIGN IN ~~")
         email = input("Please enter your email: ")
         password = input("Please enter your password: ")
         token = signin(email, password)
-        while type(token) != dict:
-            print(token)
-            print("Try again")
+        while not isinstance(token, dict):
+            print(f"\nError: {token}\nTry again.\n")
             email = input("Please enter your email: ")
             password = input("Please enter your password: ")
             token = signin(email, password)
         isSignedIn = True
-    elif action=="2":
-        print("\n~~ SIGN UP ~~ ")
-        email = input("Please enter new email address (must be like username@hypersecure.com) : ")
+        print("\nSuccess: Logged in successfully!\n")
+
+    elif action == "2":
+        print("\n~~ SIGN UP ~~")
+        email = input("Please enter new email address (must be like username@hypersecure.com): ")
         pattern = r'^.+@hypersecure\.com$'
         while not re.match(pattern, email):
-            email = input("Please enter your email (must be like username@hypersecure.com) : ")
+            email = input("Invalid format. Enter email (like username@hypersecure.com): ")
         password = input("Please enter password: ")
-        password_again = input("Please enter password again: ")
+        password_again = input("Please re-enter password: ")
         token = signup(email, password, password_again)
-        while type(token) != dict:
-            print(token)
-            print("Try again")
+        while not isinstance(token, dict):
+            print(f"\nError: {token}\nTry again.\n")
             email = input("Please enter your email: ")
             password = input("Please enter your password: ")
-            password_again = input("Please enter password again: ")
+            password_again = input("Please re-enter password: ")
             token = signup(email, password, password_again)
         isSignedIn = True
-    elif action=="3":
-        isSignedIn = exit()
+        print("\nSuccess: Account created successfully!\n")
 
-print("\n~~ Succesfully authorized! ~~\n")
+    elif action == "3":
+        print("\nExiting the system. Goodbye!\n")
+        break
 
 while isSignedIn:
-    action = input("~~~~~ Please select an operation: ~~~~~\n1-Send Mail\n2-See mails\n3-Logout\n")
-    while action!="1" and action!="2" and action!="3" and action!="4":
-        action = input("Invalid operation, try again!\n1-Send Mail\n2-See mails\n3-Logout\n")
+    print("\n~~~~~ Please select an operation: ~~~~~")
+    action = input("1-Send Mail\n2-See mails\n3-Logout\nChoose an option: ")
+
+    while action not in ["1", "2", "3"]:
+        action = input("Invalid operation, try again!\nChoose an option (1-Send Mail, 2-See Mails, 3-Logout): ")
     
-    if action=="1":
+    if action == "1":
         print("\n~~ COMPOSE A NEW MAIL ~~")
         receiver = input("Receiver: ")
         subject = input("Subject: ")
         body = input("Body: ")
         response = sendMail(receiver, subject, body, token)
-        print(response)
-    elif action=="2":
+        print(f"\n{response}\n")
+
+    elif action == "2":
         print("\n~~ MAILBOX ~~\n")
         response = mailbox(token)
-        counter = 1
-        for mail in response:
-            print("`````````````````````````````````````````````````")
-            print(counter,end="-\n")
-            print(f"From: {mail['from']}")
-            print(f"Subject: {mail['subject']}")
-            print(f"Body: {mail['body']}")
-            print(f"Sent at: {mail['sending_date']}")
-            print("`````````````````````````````````````````````````")
-            counter += 1
+        if response:
+            for count, mail in enumerate(response, start=1):
+                print(f"{'-'*40}\n{count}-\nFrom: {mail['from']}\nSubject: {mail['subject']}\nBody: {mail['body']}\nSent at: {mail['sending_date']}\n{'-'*40}")
+        else:
+            print("No mails to display.\n")
 
-    # elif action=="3":
-    #     print("\n~~ SENT MAILS ~~\n")
-    #     response = sentMails()
-    #     counter = 1
-    #     for mail in response:
-    #         print("`````````````````````````````````````````````````")
-    #         print(counter,end="-\n")
-    #         print(f"From: {mail['from']}")
-    #         print(f"Subject: {mail['subject']}")
-    #         print(f"Body: {mail['body']}")
-    #         print(f"Sent at: {mail['sending_date']}")
-    #         print("`````````````````````````````````````````````````")
-    #         counter += 1
-    
-    elif action=="3":
-        print("\nLOGGING OUT...\n")
+    elif action == "3":
+        print("\nLOGGING OUT...")
         logout()
-        isSignedIn= False
+        isSignedIn = False
         token = ""
-        print("\nLOGGED OUT...\n")
+        print("\nLOGGED OUT successfully.\n")
