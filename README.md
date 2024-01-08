@@ -1,5 +1,5 @@
 
-# Mail Encryption Project
+# HYPERSECURE : End to End Encrypted Https Mail Service
 
 ## Introduction
 HyperSecure is an innovative solution designed to enhance email security through advanced encryption techniques. This project aims to provide a reliable and secure way of communicating over email, ensuring that sensitive information remains confidential. With its robust client and mail-server components, this project is perfect for individuals or organizations looking to secure their email communications.
