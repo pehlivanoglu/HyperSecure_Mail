@@ -11,7 +11,7 @@ To get started with HyperSecure, follow these steps to clone and set up the proj
 - Git
 - Python 3.x (for the client component) 
 - Node.js (for the server component)
-- Any required dependencies listed in `requirements.txt` and `package.json`
+- Any required dependencies listed in mail-server/`package.json`
 
 ### Installation
 1. Clone the repository:
