@@ -17,7 +17,10 @@ const  mailSchema = new mongoose.Schema({
   },
   sending_time: {
     type: Date,
-    default: Date.now 
+    default: () => {
+      const now = new Date();
+      return new Date(now.getTime() + 3 * 60 * 60 * 1000); // Adding 3 hours
+    }
   },
   sym_key: {
     type: String,
