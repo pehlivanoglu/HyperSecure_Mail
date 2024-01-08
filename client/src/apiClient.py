@@ -8,6 +8,9 @@ class UserAuthClient:
         url = f"{self.base_url}/signup"
         data = {'email': email, 'password': password}
         response = requests.post(url, json=data, verify=False)
+        if response.text == '{"error":"This email is in use!"}':
+            return "This email is in use!"
+
         return response.json()
 
     def signin(self, email, password):
@@ -52,17 +55,19 @@ class MailClient:
         url = f"{self.base_url}/getMails"
         response = requests.get(url, headers=self.headers,verify=False)
         try:
+            response.json()[0]
             return response.json()
         except IndexError:
             return "Mailbox empty"
         
-    # def get_sent_mails(self):
-    #     url = f"{self.base_url}/getSentMails"
-    #     response = requests.get(url, headers=self.headers,verify=False)
-    #     try:
-    #         return response.json()[0]
-    #     except IndexError:
-    #         return "No sent mails"
+    def get_sent_mails(self):
+        url = f"{self.base_url}/getSentMails"
+        response = requests.get(url, headers=self.headers,verify=False)
+        try:
+            response.json()[0]
+            return response.json()
+        except IndexError:
+            return "No sent mails"
         
     
     def send_mail(self, receiver, subject, body, sym_key):

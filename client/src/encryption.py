@@ -7,9 +7,11 @@ from cryptography.hazmat.primitives import padding as sym_padding
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 import os
 
+base_dir = os.getcwd()
+
 class encrypt:
     def load_public_key(self):
-        with open("./otherskeys/public_key.pem", "rb") as key_file:
+        with open(f"{base_dir}/.otherskeys/public_key.pem", "rb") as key_file:
             public_key = serialization.load_pem_public_key(
                 key_file.read(),
                 backend=default_backend()
@@ -31,7 +33,7 @@ class encrypt:
         return encrypted_symmetric_key
 
     def read_file_to_encrypt(self):
-        with open("./data/mail", 'rb') as f:
+        with open(f"{base_dir}/.data/mail", 'rb') as f:
             file_data = f.read()
         return file_data
 
@@ -45,11 +47,11 @@ class encrypt:
         return encrypted_data
 
     def save_enc_data(self, encrypted_data):
-        with open("./enc_data/mail", 'wb') as f:
+        with open(f"{base_dir}/.enc_data/mail", 'wb') as f:
             f.write(encrypted_data)
 
     def save_enc_sym_key(self, encrypted_symmetric_key):
-        with open("./otherskeys/enc_sym_key", 'wb') as f:
+        with open(f"{base_dir}/.otherskeys/enc_sym_key", 'wb') as f:
             f.write(encrypted_symmetric_key)
 
     def run(self):
@@ -64,7 +66,7 @@ class encrypt:
         
 class decrypt:
     def load_private_key(self, email):
-        with open(f"./mykeys/private{email}.pem", "rb") as key_file:
+        with open(f"{base_dir}/.mykeys/private{email}.pem", "rb") as key_file:
             private_key = serialization.load_pem_private_key(
                 key_file.read(),
                 password=None,
@@ -73,7 +75,7 @@ class decrypt:
         return private_key
 
     def load_enc_sym_key(self):
-        with open("./otherskeys/enc_sym_key", 'rb') as f:
+        with open(f"{base_dir}/.otherskeys/enc_sym_key", 'rb') as f:
             encrypted_symmetric_key = f.read()
 
         return encrypted_symmetric_key
@@ -90,7 +92,7 @@ class decrypt:
         return symmetric_key
 
     def load_enc_file(self):
-        with open("./enc_data/mail", 'rb') as f:
+        with open(f"{base_dir}/.enc_data/mail", 'rb') as f:
             iv = f.read(16)  # Assuming a 16-byte IV for AES
             encrypted_data = f.read()
         return iv, encrypted_data
@@ -128,10 +130,10 @@ class RSA:
         return public_key
 
     def save_key_priv(self, key,email):
-        with open(f"./mykeys/private{email}.pem", "w") as f:
+        with open(f"{base_dir}/.mykeys/private{email}.pem", "w") as f:
             f.write(key)
     def save_key_pub(self, key, email):
-        with open(f"./mykeys/public{email}.pem", "w") as f:
+        with open(f"{base_dir}/.mykeys/public{email}.pem", "w") as f:
             f.write(key)
 
     def run(self,email):

@@ -13,8 +13,15 @@ import os
 import sys
 import platform
 import subprocess
+import shutil
 
-print(os.getcwd())
+directory_path = os.getcwd()
+
+for dir in ["/sentMails","/data","/enc_data","/mailbox","/mykeys","/otherskeys"]:
+    if not os.path.exists(directory_path+dir):
+        os.makedirs(directory_path+dir)
+
+
 
 def delete_file_permanently(file_path):
     try:
@@ -171,15 +178,6 @@ def sentMails():
 
 
 def logout():
-    print("\nInitiating logout process...\n")
-    files_to_delete = ["./data/mail", "./enc_data/mail", "./otherskeys/enc_sym_key", "./otherskeys/public_key.pem"]
-    for file in files_to_delete:
-        try:
-            delete_file_permanently(file)
-            pass
-        except:
-            pass
-
     flag = input("Do you want to delete your private key from this computer? (Yes: y / No: n): ").lower()
     if flag == "y":
         private_key_file = f"./mykeys/private{email_addr}.pem"
@@ -196,30 +194,9 @@ def logout():
 
         delete_file_permanently(private_key_file)
         print("Your private key has been deleted.\n")
-
-    print("Cleaning up mailbox...")
-    folder_path = "./mailbox"
-    for filename in os.listdir(folder_path):
-        file_path = os.path.join(folder_path, filename)
-        try:
-            if os.path.isfile(file_path) or os.path.islink(file_path):
-                os.unlink(file_path)
-        except:
-            pass
-
-    con = input("\nDo you want to delete your sent mails? (Yes: y / No: n): ").lower()
-    if con == "y":
-        print("Deleting sent mails...")
-        folder_path = "./sentMails"
-        for filename in os.listdir(folder_path):
-            file_path = os.path.join(folder_path, filename)
-            try:
-                if os.path.isfile(file_path) or os.path.islink(file_path):
-                    os.unlink(file_path)
-            except:
-                pass
     
     print("\nLogout completed successfully.\n")
+
 
     
     
@@ -300,3 +277,4 @@ while isSignedIn:
         isSignedIn = False
         token = ""
         print("\nLOGGED OUT successfully.\n")
+
