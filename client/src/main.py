@@ -17,7 +17,6 @@ import shutil
 import getpass
 import signal
 
-# ANSI escape sequences for colors
 class Color:
     RED = '\033[91m'
     GREEN = '\033[92m'
@@ -54,12 +53,7 @@ try:
 
     def delete_file_permanently(file_path):
         try:
-            if platform.system() == "Windows":
-                import win32com.client
-                shell = win32com.client.Dispatch("WScript.Shell")
-                shell.SendKeys("{DEL}")
-                os.remove(file_path)
-            elif platform.system() == "Darwin":
+            if platform.system() == "Darwin":
                 subprocess.run(["rm", file_path])
             elif platform.system() == "Linux":
                 os.remove(file_path)
@@ -250,7 +244,7 @@ try:
 
 
     while not isSignedIn:
-        print(color_text("\n\n~~~~~~~~~~~~ Welcome to End to End Encrypted Https Mail System ~~~~~~~~~~~~\n\n",Color.CYAN))
+        print(color_text("\n\n~~~~~~~~~~~~ Welcome to HYPERSECURE : End to End Encrypted Https Mail Service ~~~~~~~~~~~~\n\n",Color.CYAN))
         action = input("\n1-Sign In\n2-Sign Up\n3-Exit\n\nChoose an option: ")
 
         while action not in ["1", "2", "3"]:
@@ -276,11 +270,11 @@ try:
         elif action == "2":
             clear_terminal()
             print("\n~~ SIGN UP ~~")
-            email = input("\n\nPlease enter new email address (must be like username@hypersecure.com): ")
+            email = input("\n\nPlease enter new email address (must be like <username>@hypersecure.com): ")
             pattern = r'^.+@hypersecure\.com$'
             while not re.match(pattern, email):
                 clear_terminal()
-                email = input("\n\nInvalid format. Enter email (like username@hypersecure.com): ")
+                email = input("\n\nInvalid format. Enter email (like <username>@hypersecure.com): ")
             password = getpass.getpass("\nPlease enter your password: ")
             password_again = getpass.getpass("\nPlease re-enter your password: ")
             token = signup(email, password, password_again)
@@ -347,9 +341,8 @@ try:
             logout()
             isSignedIn = False
             token = ""
-            
 
-    
+
 
 except KeyboardInterrupt:
     print(color_text("\n\nEXITING WITH KEYBOARD INTERRUPTION!\n", Color.YELLOW))
@@ -359,11 +352,18 @@ except ValueError:
     print(color_text("Your private key is not valid!\n", Color.RED))
     print("Please check your private key's validity!")
     time.sleep(4)
+
+except Exception:
+    print("Connection error , please check your internet connection!")
     
 finally:
     for dir in ["/.data","/.enc_data","/.otherskeys"]:
             if os.path.exists(directory_path+dir):
                 shutil.rmtree(directory_path+dir)
+
+    if not os.listdir(directory_path+"/.mykeys"):
+            os.rmdir(directory_path+"/.mykeys")
+
     time.sleep(2)
     clear_terminal()
     print("\nLOGGED OUT from Hypersecure successfully.\n")
