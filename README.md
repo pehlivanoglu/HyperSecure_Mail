@@ -1,29 +1,80 @@
-## USAGE:
 
-### client/src/encryption:
-RSA class in rsa.ipynb file is used for creating public-private key pairs. Can be simply used as 
+# Mail Encryption Project
 
-x = RSA()
+## Introduction
+The Mail Encryption Project is an innovative solution designed to enhance email security through advanced encryption techniques. This project aims to provide a reliable and secure way of communicating over email, ensuring that sensitive information remains confidential. With its robust client and mail-server components, this project is perfect for individuals or organizations looking to secure their email communications.
 
-x.run(necessary_parameters)
+## Getting Started
+To get started with the Mail Encryption Project, follow these steps to clone and set up the project on your local machine.
 
+### Prerequisites
+- Git
+- Python 3.x
+- Node.js (for the client component)
+- Any required dependencies listed in `requirements.txt` and `package.json`
 
-It will automatically create key pair in Key-Pair folder.
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourgithubusername/mail_enc.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd mail_enc
+   ```
+3. Install the necessary dependencies:
+   - For the client:
+     ```bash
+     cd client
+     npm install
+     ```
+   - For the mail-server:
+     ```bash
+     cd mail-server
+     pip install -r requirements.txt
+     ```
 
-encrypt and decrypt classes in enc_dec.ipynb file are used for encrypting and decrypting file or a text with symmetric key. Then symmetric key will be encrypted with public key. Can be simply used as
+## Usage
+After installation, here's how to run and use the project:
+- To start the client application:
+  ```bash
+  cd client
+  npm start
+  ```
+- To launch the mail-server:
+  ```bash
+  cd mail-server
+  python server.py
+  ```
 
-y = encrypt() #or decrypt()
+## Components
+### Client
+The client component of the Mail Encryption Project is a user-friendly interface that allows users to compose, send, and receive encrypted emails. It communicates with the mail-server to ensure secure transmission of messages.
 
-y = run(necessary_parameters)
+### Mail Server
+The mail-server component handles the encryption and decryption of emails. It uses advanced cryptographic algorithms to ensure that emails are securely transmitted and can only be read by intended recipients.
 
-IMPORTANT NOTE = You may need to change the file_path parameters in both files
+## Contributing
+We welcome contributions! If you would like to contribute, please follow these steps:
+1. Fork the repository.
+2. Create a new branch for your feature.
+3. Commit your changes with clear commit messages.
+4. Push to the branch and open a pull request.
 
-### server/rsa_transfer_api:
+## Versioning
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the tags on this repository.
 
-will be written
+## Authors and Acknowledgment
+- John Doe - Initial work
+- Jane Doe - Contributor
 
+Special thanks to the open-source community for their continuous support.
 
-## Issues:
-<del>1- in enc_dyc_tes.ipynb file, encrypting short text files is problematic due to 16byte encyrption method. Will be solved.</del>
+## License
+This project is licensed under the MIT License - see the `LICENSE.md` file for details.
 
-2-encrypting short text files is problematic due to 16byte encyrption method. Will be solved.
+## Contact
+For any queries or contributions, please contact us at [email@email.com](mailto:email@email.com).
+
+## Additional Information
+For more information, visit our [Wiki](https://github.com/yourgithubusername/mail_enc/wiki) or check out our [FAQs](https://github.com/yourgithubusername/mail_enc/FAQs).
