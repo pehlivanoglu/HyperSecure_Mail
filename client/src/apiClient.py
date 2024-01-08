@@ -84,3 +84,16 @@ class MailClient:
         url = f"{self.base_url}/sendMail"
         response = requests.post(url, json=data, headers=self.headers,verify=False)
         return response.text
+    
+    def send_out_mail(self, receiver, subject, body):    
+
+        data = {
+        "receiver": receiver,
+        "subject": subject,
+        "body": body,
+        "sym_key": ""
+        }
+        url = f"{self.base_url}/sendOutMail"
+        response = requests.post(url, json=data, headers=self.headers,verify=False)
+        return response.text
+
