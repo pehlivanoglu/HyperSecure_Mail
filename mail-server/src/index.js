@@ -43,14 +43,10 @@ app.get("/", requireAuth, (req, res) => {
 });
 
 const SSLoptions = {
-  key: fs.readFileSync("/home/pehlivanoglu/Desktop/mail_enc/mail-server/src/server.key"),
-  cert: fs.readFileSync('/home/pehlivanoglu/Desktop/mail_enc/mail-server/src/server.cert')
+  key: fs.readFileSync("path/to/your/server.key"),
+  cert: fs.readFileSync('path/to/your/server.cert')
 };
 
 https.createServer(SSLoptions, app).listen(443, () => {
   console.log('HTTPS server running on port 443');
 });
-
-// app.listen(3000, () => {
-//   console.log("Listening on port 3000");
-// });
