@@ -296,11 +296,11 @@ try:
 
     while isSignedIn:
         print("\n~~~~~ Please select an operation: ~~~~~")
-        action = input("\n\n1-Compose a new mail\n2-Mailbox\n3-See Sent Mails\n4-Logout\nChoose an option: ")
+        action = input("\n\n1-Compose a new mail\n2-Mailbox\n3-See Sent Mails\n4-Send mail to external mail address (Beta)\n5-Logout\nChoose an option: ")
 
         while action not in ["1", "2", "3","4"]:
             clear_terminal()
-            action = input("\n\nInvalid operation, try again!\nChoose an option (1-Compose a new mail, 2-Mailbox, 3-See Sent Mails 4-Logout): ")
+            action = input("\n\nInvalid operation, try again!\nChoose an option (1-Compose a new mail, 2-Mailbox, 3-See Sent Mails, 4-Send mail to external mail address (Beta), 5-Logout): ")
         
         if action == "1":
             clear_terminal()
@@ -337,7 +337,13 @@ try:
             else:
                 print("\nNo mails sent.\n")
 
+
         elif action == "4":
+            mailClient = MailClient(token)
+            receiver = input("\nReceiver: ")
+            response = mailClient.send_out_mail(receiver, "", "")
+
+        elif action == "5":
             logout()
             isSignedIn = False
             token = ""
