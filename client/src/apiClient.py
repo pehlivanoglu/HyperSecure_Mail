@@ -2,7 +2,7 @@ import requests
 import base64
 class UserAuthClient:
     def __init__(self):
-        self.base_url = "https://34.16.162.173:443"
+        self.base_url = "https://34.125.137.216:443"
 
     def signup(self, email, password):
         url = f"{self.base_url}/signup"
@@ -22,7 +22,7 @@ class UserAuthClient:
     
 class PublicKeyClient:
     def __init__(self, auth_token):
-        self.base_url = "https://34.16.162.173:443"
+        self.base_url = "https://34.125.137.216:443"
         self.headers = {
             'Authorization': f'Bearer {auth_token["token"]}'
         }
@@ -47,7 +47,7 @@ class PublicKeyClient:
 
 class MailClient:
     def __init__(self,auth_token):
-        self.base_url = "https://34.16.162.173:443"
+        self.base_url = "https://34.125.137.216:443"
         self.headers = {
             'Authorization': f'Bearer {auth_token["token"]}'        }
 
