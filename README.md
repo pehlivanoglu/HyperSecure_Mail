@@ -30,6 +30,13 @@ To get started with HyperSecure, follow these steps to clone and set up the proj
      ```
 
 ## Usage
+### For direct usage of client side in Linux based dists:
+```bash
+  chmod +x run
+  ./run
+```
+
+### For executing client's python file and server side:
 After installation, here's how to run and use the project:
 - To start the client application:
   ```bash
