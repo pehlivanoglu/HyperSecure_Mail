@@ -31,6 +31,7 @@ To get started with HyperSecure, follow these steps to clone and set up the proj
 
 ## Usage
 ### For direct usage of client side in Linux based dists:
+But in this case, server ,where you make requests to, is my non-always-on server :))
 ```bash
   chmod +x run
   ./run
@@ -38,6 +39,7 @@ To get started with HyperSecure, follow these steps to clone and set up the proj
 
 ### For executing client's python file and server side:
 After installation, here's how to run and use the project:
+Before running, if you are planning to run the mail-server in your own server, you need to change urls to your machine's url in client/src/apiClient.py
 - To start the client application:
   ```bash
   cd client
