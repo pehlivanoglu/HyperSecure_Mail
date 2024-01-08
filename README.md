@@ -2,36 +2,31 @@
 # Mail Encryption Project
 
 ## Introduction
-The Mail Encryption Project is an innovative solution designed to enhance email security through advanced encryption techniques. This project aims to provide a reliable and secure way of communicating over email, ensuring that sensitive information remains confidential. With its robust client and mail-server components, this project is perfect for individuals or organizations looking to secure their email communications.
+HyperSecure is an innovative solution designed to enhance email security through advanced encryption techniques. This project aims to provide a reliable and secure way of communicating over email, ensuring that sensitive information remains confidential. With its robust client and mail-server components, this project is perfect for individuals or organizations looking to secure their email communications.
 
 ## Getting Started
-To get started with the Mail Encryption Project, follow these steps to clone and set up the project on your local machine.
+To get started with HyperSecure, follow these steps to clone and set up the project on your local machine.
 
 ### Prerequisites
 - Git
-- Python 3.x
-- Node.js (for the client component)
+- Python 3.x (for the client component) 
+- Node.js (for the server component)
 - Any required dependencies listed in `requirements.txt` and `package.json`
 
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourgithubusername/mail_enc.git
+   git clone https://github.com/pehlivanoglu/mail_enc.git
    ```
 2. Navigate to the project directory:
    ```bash
    cd mail_enc
    ```
 3. Install the necessary dependencies:
-   - For the client:
-     ```bash
-     cd client
-     npm install
-     ```
    - For the mail-server:
      ```bash
      cd mail-server
-     pip install -r requirements.txt
+     npm install
      ```
 
 ## Usage
@@ -39,20 +34,20 @@ After installation, here's how to run and use the project:
 - To start the client application:
   ```bash
   cd client
-  npm start
+  source venv/bin/activate
   ```
 - To launch the mail-server:
   ```bash
   cd mail-server
-  python server.py
+  sudo npm run dev
   ```
 
 ## Components
 ### Client
-The client component of the Mail Encryption Project is a user-friendly interface that allows users to compose, send, and receive encrypted emails. It communicates with the mail-server to ensure secure transmission of messages.
+The client component of HyperSecure is a user-friendly terminal interface that allows users to send and receive encrypted emails. It uses advanced cryptographic algorithms to ensure that sensitive information is neither stored nor be seen by malicious users and server-side. It communicates with the mail-server with HTTPS to ensure secure transmission of messages.
 
 ### Mail Server
-The mail-server component handles the encryption and decryption of emails. It uses advanced cryptographic algorithms to ensure that emails are securely transmitted and can only be read by intended recipients.
+The mail-server component ensures emails are securely transmitted and stored encrypted. Also stores public keys of users for sending mail from client.
 
 ## Contributing
 We welcome contributions! If you would like to contribute, please follow these steps:
@@ -64,17 +59,13 @@ We welcome contributions! If you would like to contribute, please follow these s
 ## Versioning
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the tags on this repository.
 
-## Authors and Acknowledgment
-- John Doe - Initial work
-- Jane Doe - Contributor
-
+## License
+This project is not licensed under anything :)
 Special thanks to the open-source community for their continuous support.
 
-## License
-This project is licensed under the MIT License - see the `LICENSE.md` file for details.
-
 ## Contact
-For any queries or contributions, please contact us at [email@email.com](mailto:email@email.com).
+For any queries or contributions, please contact us at [ahmet.pehlivanoglu@ozu.edu.tr](mailto:ahmet.pehlivanoglu@ozu.edu.tr).
 
 ## Additional Information
 For more information, visit our [Wiki](https://github.com/yourgithubusername/mail_enc/wiki) or check out our [FAQs](https://github.com/yourgithubusername/mail_enc/FAQs).
+Actually, we don't have any of these rn :/
