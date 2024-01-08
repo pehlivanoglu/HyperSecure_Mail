@@ -35,6 +35,7 @@ After installation, here's how to run and use the project:
   ```bash
   cd client
   source venv/bin/activate
+  python3 src/main.py
   ```
 - To launch the mail-server:
   ```bash
@@ -44,10 +45,10 @@ After installation, here's how to run and use the project:
 
 ## Components
 ### Client
-The client component of HyperSecure is a user-friendly terminal interface that allows users to send and receive encrypted emails. It uses advanced cryptographic algorithms to ensure that sensitive information is neither stored nor be seen by malicious users and server-side. It communicates with the mail-server with HTTPS to ensure secure transmission of messages.
+The client component of HyperSecure is a user-friendly terminal interface that allows users to send and receive encrypted emails. It uses advanced cryptographic algorithms to ensure that sensitive information is neither stored nor be seen by malicious users and server-side. It communicates with the mail-server via HTTPS to ensure secure transmission of messages.
 
 ### Mail Server
-The mail-server component ensures emails are securely transmitted and stored encrypted. Also stores public keys of users for sending mail from client.
+The mail-server component ensures that emails are securely transmitted and stored encrypted. Also stores public keys of users for sending mail from client-side.
 
 ## Contributing
 We welcome contributions! If you would like to contribute, please follow these steps:
@@ -58,13 +59,14 @@ We welcome contributions! If you would like to contribute, please follow these s
 
 ## Versioning
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the tags on this repository.
+Actually, we don't rn :/
 
 ## License
 This project is not licensed under anything :)
 Special thanks to the open-source community for their continuous support.
 
 ## Contact
-For any queries or contributions, please contact us at [ahmet.pehlivanoglu@ozu.edu.tr](mailto:ahmet.pehlivanoglu@ozu.edu.tr).
+For any queries or contributions, please contact me at [ahmet.pehlivanoglu@ozu.edu.tr](mailto:ahmet.pehlivanoglu@ozu.edu.tr).
 
 ## Additional Information
 For more information, visit our [Wiki](https://github.com/yourgithubusername/mail_enc/wiki) or check out our [FAQs](https://github.com/yourgithubusername/mail_enc/FAQs).
