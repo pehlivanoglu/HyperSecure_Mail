@@ -1,0 +1,3 @@
+mail-server/node_modules
+client/venv
+client/src/__pycache__
