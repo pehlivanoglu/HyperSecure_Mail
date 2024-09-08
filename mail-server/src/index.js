@@ -20,6 +20,7 @@ app.use(authRoutes);
 app.use(keyRoutes);
 app.use(mailRoutes);
 
+// This is not a real URI, I just used it for testing purposes
 const mongoUri = "mongodb+srv://chatAppAdmin:Fy7L5mhj%23JaH.cH@cluster0.4cv2qzz.mongodb.net/?retryWrites=true&w=majority";
 if (!mongoUri) {
   throw new Error(
