@@ -23,11 +23,11 @@ To get started with HyperSecure, follow these steps to clone and set up the proj
    cd HyperSecure_Mail
    ```
 3. Install the necessary dependencies:
-   - For the mail-server:
-     ```bash
-     cd mail-server
-     npm install
-     ```
+   For the mail-server:
+   ```bash
+   cd mail-server
+   npm install
+   ```
 4. Install necessary libs for client side
 
 ## Usage
